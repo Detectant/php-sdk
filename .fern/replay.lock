@@ -12,5 +12,494 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-php-sdk: 2.20.4
-current_generation: bcf1ed2ea88b57bad885171ce24a7794809884b1
-patches: []
+  - commit_sha: bad2a2b656a0eb9674885a2c164b68d0752d36df
+    tree_hash: 548d5e243dadae8345622a22109e7e1d316371e4
+    timestamp: 2026-08-22T11:51:18.510Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-php-sdk: 2.20.4
+current_generation: bad2a2b656a0eb9674885a2c164b68d0752d36df
+patches:
+  - id: patch-2ce287bf
+    content_hash: sha256:27278b69ff22b76d7efb66a0db39a459249c9d2108e5ad68aa07927694ced767
+    original_commit: 2ce287bf367eb52f27844e81435b291771780533
+    original_message: "docs: adapt README for PHP SDK"
+    original_author: Jack <jack@jack.es>
+    base_generation: 1bbd669bad118886472861b0de7ac12147199a28
+    files:
+      - README.md
+    patch_content: |+
+      From 2ce287bf367eb52f27844e81435b291771780533 Mon Sep 17 00:00:00 2001
+      From: Jack <jack@jack.es>
+      Date: Sat, 22 Aug 2026 13:34:44 +0200
+      Subject: [PATCH] docs: adapt README for PHP SDK
+
+      ---
+       README.md | 231 +++++++++++++++++++++++++-----------------------------
+       1 file changed, 107 insertions(+), 124 deletions(-)
+
+      diff --git a/README.md b/README.md
+      index 0e56844..5b060e2 100644
+      --- a/README.md
+      +++ b/README.md
+      @@ -1,182 +1,165 @@
+      -# Detectant PHP Library
+      +<p align="center">
+      +  <img src="../../app/dashboard/public/images/detectant-github-banner.png" alt="Detectant" width="100%">
+      +</p>
+       
+      -![](https://example.com/banner)
+      +# Detectant PHP SDK
+       
+      -[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2FDetectant%2Fphp-sdk)
+      -[![php shield](https://img.shields.io/badge/php-packagist-pink)](https://packagist.org/packages/detectant/detectant)
+      +Scan files for malware from PHP.
+       
+      -Official SDK for the Detectant malware scanning API
+      +## Install
+       
+      -## Table of Contents
+      +This SDK requires PHP 8.1 or later and a PSR-18 HTTP client implementation.
+       
+      -- [Documentation](#documentation)
+      -- [Requirements](#requirements)
+      -- [Installation](#installation)
+      -- [Usage](#usage)
+      -- [Environments](#environments)
+      -- [Exception Handling](#exception-handling)
+      -- [Advanced](#advanced)
+      -  - [Custom Client](#custom-client)
+      -  - [Retries](#retries)
+      -  - [Timeouts](#timeouts)
+      -- [Contributing](#contributing)
+      +```bash
+      +composer require detectant/detectant guzzlehttp/guzzle
+      +```
+       
+      -## Documentation
+      +Set your API key in the environment:
+       
+      -API reference documentation is available [here](https://docs.example.com).
+      +```bash
+      +export DETECTANT_API_KEY="your-api-key"
+      +```
+       
+      -## Requirements
+      +## Create a client
+       
+      -This SDK requires PHP ^8.1.
+      +```php
+      +<?php
+       
+      -## Installation
+      +use Detectant\DetectantClient;
+       
+      -```sh
+      -composer require detectant/detectant
+      +$detectant = new DetectantClient(
+      +    apiKey: getenv('DETECTANT_API_KEY') ?: null,
+      +);
+       ```
+       
+      -## Usage
+      +## Scan one file
+       
+      -Instantiate and use the client with the following:
+      +The simplest PHP option is a file path:
+       
+       ```php
+      -<?php
+      -
+      -namespace Example;
+      -
+      -use Detectant\DetectantClient;
+       use Detectant\Requests\CreateScanRequest;
+       use Detectant\Utils\File;
+       
+      -$client = new DetectantClient(
+      -    apiKey: '<value>',
+      -);
+      -$client->scan(
+      -    new CreateScanRequest([
+      -        'file' => File::createFromString("example_file", "example_file"),
+      -    ]),
+      -);
+      +$result = $detectant->scan(new CreateScanRequest([
+      +    'file' => File::createFromFilepath('./invoice.pdf'),
+      +]));
+       
+      +echo $result->verdict . PHP_EOL;
+      +print_r($result->detections);
+       ```
+       
+      -## Environments
+      +The call completes after the file has been analyzed and returns its scan result.
+       
+      -This SDK allows you to configure different environments for API requests.
+      +### Supported file inputs
+       
+      -```php
+      -The SDK defaults to the `Default_` environment. To use a different environment, pass it to the client constructor:
+      +Choose the input that already fits your application:
+       
+       ```php
+      -use Detectant\DetectantClient;
+      -use Detectant\Environments;
+      +use Detectant\Requests\CreateScanRequest;
+      +use Detectant\Utils\File;
+       
+      -$client = new DetectantClient(
+      -    token: '<YOUR_TOKEN>',
+      -    options: [
+      -        'baseUrl' => Environments::Staging->value
+      -    ]
+      +// A path — recommended when the file is on disk
+      +$file = File::createFromFilepath('./invoice.pdf');
+      +
+      +// File contents already in memory
+      +$file = File::createFromString(
+      +    content: $fileBytes,
+      +    filename: 'invoice.pdf',
+      +    contentType: 'application/pdf',
+      +);
+      +
+      +// Any PSR-7 StreamInterface
+      +$file = new File(
+      +    stream: $stream,
+      +    filename: 'invoice.pdf',
+      +    contentType: 'application/pdf',
+       );
+      -```
+       
+      -Available environments:
+      -- `Environments::Default_`
+      +$result = $detectant->scan(new CreateScanRequest([
+      +    'file' => $file,
+      +]));
+       ```
+       
+      -## Exception Handling
+      +The SDK accepts file paths, in-memory strings, and PSR-7 streams. For in-memory
+      +data and streams, provide a filename and content type when they are known.
+       
+      -When the API returns a non-success status code (4xx or 5xx response), an exception will be thrown.
+      +## Scan a batch
+      +
+      +Upload between 1 and 20 files. Results are returned in the same order as the inputs.
+       
+       ```php
+      -use Detectant\Exceptions\DetectantApiException;
+      -use Detectant\Exceptions\DetectantException;
+      +use Detectant\Requests\CreateScanBatchRequest;
+      +use Detectant\Utils\File;
+       
+      -try {
+      -    $response = $client->scan(...);
+      -} catch (DetectantApiException $e) {
+      -    echo 'API Exception occurred: ' . $e->getMessage() . "\n";
+      -    echo 'Status Code: ' . $e->getCode() . "\n";
+      -    echo 'Response Body: ' . $e->getBody() . "\n";
+      -    // Optionally, rethrow the exception or handle accordingly.
+      +$batch = $detectant->scanBatch(new CreateScanBatchRequest([
+      +    'files' => [
+      +        File::createFromFilepath('./invoice.pdf'),
+      +        File::createFromFilepath('./archive.zip'),
+      +    ],
+      +]));
+      +
+      +foreach ($batch->results as $item) {
+      +    if ($item->scan !== null) {
+      +        echo $item->filename . ': ' . $item->scan->verdict . PHP_EOL;
+      +    } else {
+      +        echo $item->filename . ': ' . $item->error . PHP_EOL;
+      +    }
+       }
+       ```
+       
+      -## Advanced
+      +One file can fail without preventing the other files in the batch from being scanned. Check each item's `scan` and `error` values.
+       
+      -### Custom Client
+      +## Configuration
+       
+      -This SDK is built to work with any HTTP client that implements the [PSR-18](https://www.php-fig.org/psr/psr-18/) `ClientInterface`.
+      -By default, if no client is provided, the SDK will use `php-http/discovery` to find an installed HTTP client.
+      -However, you can pass your own client that adheres to `ClientInterface`:
+      +Use `baseUrl` for a self-hosted or local API, and increase the timeout for large files when needed:
+       
+       ```php
+      -use Detectant\DetectantClient;
+      -
+      -// Pass any PSR-18 compatible HTTP client implementation.
+      -// For example, using Guzzle:
+      -$customClient = new \GuzzleHttp\Client([
+      -    'timeout' => 5.0,
+      -]);
+      -
+      -$client = new DetectantClient(options: [
+      -    'client' => $customClient
+      -]);
+      -
+      -// Or using Symfony HttpClient:
+      -// $customClient = (new \Symfony\Component\HttpClient\Psr18Client())
+      -//     ->withOptions(['timeout' => 5.0]);
+      -//
+      -// $client = new DetectantClient(options: [
+      -//     'client' => $customClient
+      -// ]);
+      +$detectant = new DetectantClient(
+      +    apiKey: getenv('DETECTANT_API_KEY') ?: null,
+      +    options: [
+      +        'baseUrl' => 'https://api.example.com',
+      +        'timeout' => 120.0,
+      +    ],
+      +);
+       ```
+       
+      -### Retries
+      -
+      -The SDK is instrumented with automatic retries with exponential backoff. A request will be retried as long
+      -as the request is deemed retryable and the number of retry attempts has not grown larger than the configured
+      -retry limit (default: 2).
+      -
+      -A request is deemed retryable when any of the following HTTP status codes is returned:
+      -
+      -- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
+      -- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
+      -- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses) (Internal Server Error)
+      -
+      -The `retryStatusCodes` configuration controls which [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses) status codes are retried:
+      -
+      -- `legacy` (default): Retries `408`, `429`, and all `>= 500`
+      -- `recommended`: Retries `408`, `429`, `502`, `503`, `504` only (excludes `500 Internal Server Error` to avoid retrying non-idempotent failures)
+      -
+      -Use the `maxRetries` request option to configure this behavior.
+      +Requests retry transient failures twice by default. Override retries globally or for one request:
+       
+       ```php
+      -$response = $client->scan(
+      -    ...,
+      -    options: [
+      -        'maxRetries' => 0 // Override maxRetries at the request level
+      -    ]
+      +$detectant = new DetectantClient(
+      +    apiKey: getenv('DETECTANT_API_KEY') ?: null,
+      +    options: ['maxRetries' => 3],
+       );
+      +
+      +$result = $detectant->scan($request, options: ['maxRetries' => 0]);
+       ```
+       
+      -### Timeouts
+      +### Custom HTTP client
+       
+      -The SDK defaults to a 30 second timeout. Use the `timeout` option to configure this behavior.
+      +The SDK discovers an installed PSR-18 client automatically. You can also provide one explicitly:
+       
+       ```php
+      -$response = $client->scan(
+      -    ...,
+      +use GuzzleHttp\Client;
+      +
+      +$detectant = new DetectantClient(
+      +    apiKey: getenv('DETECTANT_API_KEY') ?: null,
+           options: [
+      -        'timeout' => 3.0 // Override timeout at the request level
+      -    ]
+      +        'client' => new Client(),
+      +    ],
+       );
+       ```
+       
+      -## Contributing
+      +## Exception handling
+       
+      -While we value open-source contributions to this SDK, this library is generated programmatically.
+      -Additions made directly to this library would have to be moved over to our generation code,
+      -otherwise they would be overwritten upon the next generated release. Feel free to open a PR as
+      -a proof of concept, but know that we will not be able to merge it as-is. We suggest opening
+      -an issue first to discuss with us!
+      +```php
+      +use Detectant\Exceptions\DetectantApiException;
+      +use Detectant\Exceptions\DetectantException;
+       
+      -On the other hand, contributions to the README are always very welcome!
+      +try {
+      +    $result = $detectant->scan($request);
+      +} catch (DetectantApiException $exception) {
+      +    echo $exception->getCode() . ': ' . $exception->getMessage() . PHP_EOL;
+      +} catch (DetectantException $exception) {
+      +    echo $exception->getMessage() . PHP_EOL;
+      +}
+      +```
+      -- 
+      2.52.0
+
+    theirs_snapshot:
+      README.md: |
+        <p align="center">
+          <img src="../../app/dashboard/public/images/detectant-github-banner.png" alt="Detectant" width="100%">
+        </p>
+
+        # Detectant PHP SDK
+
+        Scan files for malware from PHP.
+
+        ## Install
+
+        This SDK requires PHP 8.1 or later and a PSR-18 HTTP client implementation.
+
+        ```bash
+        composer require detectant/detectant guzzlehttp/guzzle
+        ```
+
+        Set your API key in the environment:
+
+        ```bash
+        export DETECTANT_API_KEY="your-api-key"
+        ```
+
+        ## Create a client
+
+        ```php
+        <?php
+
+        use Detectant\DetectantClient;
+
+        $detectant = new DetectantClient(
+            apiKey: getenv('DETECTANT_API_KEY') ?: null,
+        );
+        ```
+
+        ## Scan one file
+
+        The simplest PHP option is a file path:
+
+        ```php
+        use Detectant\Requests\CreateScanRequest;
+        use Detectant\Utils\File;
+
+        $result = $detectant->scan(new CreateScanRequest([
+            'file' => File::createFromFilepath('./invoice.pdf'),
+        ]));
+
+        echo $result->verdict . PHP_EOL;
+        print_r($result->detections);
+        ```
+
+        The call completes after the file has been analyzed and returns its scan result.
+
+        ### Supported file inputs
+
+        Choose the input that already fits your application:
+
+        ```php
+        use Detectant\Requests\CreateScanRequest;
+        use Detectant\Utils\File;
+
+        // A path — recommended when the file is on disk
+        $file = File::createFromFilepath('./invoice.pdf');
+
+        // File contents already in memory
+        $file = File::createFromString(
+            content: $fileBytes,
+            filename: 'invoice.pdf',
+            contentType: 'application/pdf',
+        );
+
+        // Any PSR-7 StreamInterface
+        $file = new File(
+            stream: $stream,
+            filename: 'invoice.pdf',
+            contentType: 'application/pdf',
+        );
+
+        $result = $detectant->scan(new CreateScanRequest([
+            'file' => $file,
+        ]));
+        ```
+
+        The SDK accepts file paths, in-memory strings, and PSR-7 streams. For in-memory
+        data and streams, provide a filename and content type when they are known.
+
+        ## Scan a batch
+
+        Upload between 1 and 20 files. Results are returned in the same order as the inputs.
+
+        ```php
+        use Detectant\Requests\CreateScanBatchRequest;
+        use Detectant\Utils\File;
+
+        $batch = $detectant->scanBatch(new CreateScanBatchRequest([
+            'files' => [
+                File::createFromFilepath('./invoice.pdf'),
+                File::createFromFilepath('./archive.zip'),
+            ],
+        ]));
+
+        foreach ($batch->results as $item) {
+            if ($item->scan !== null) {
+                echo $item->filename . ': ' . $item->scan->verdict . PHP_EOL;
+            } else {
+                echo $item->filename . ': ' . $item->error . PHP_EOL;
+            }
+        }
+        ```
+
+        One file can fail without preventing the other files in the batch from being scanned. Check each item's `scan` and `error` values.
+
+        ## Configuration
+
+        Use `baseUrl` for a self-hosted or local API, and increase the timeout for large files when needed:
+
+        ```php
+        $detectant = new DetectantClient(
+            apiKey: getenv('DETECTANT_API_KEY') ?: null,
+            options: [
+                'baseUrl' => 'https://api.example.com',
+                'timeout' => 120.0,
+            ],
+        );
+        ```
+
+        Requests retry transient failures twice by default. Override retries globally or for one request:
+
+        ```php
+        $detectant = new DetectantClient(
+            apiKey: getenv('DETECTANT_API_KEY') ?: null,
+            options: ['maxRetries' => 3],
+        );
+
+        $result = $detectant->scan($request, options: ['maxRetries' => 0]);
+        ```
+
+        ### Custom HTTP client
+
+        The SDK discovers an installed PSR-18 client automatically. You can also provide one explicitly:
+
+        ```php
+        use GuzzleHttp\Client;
+
+        $detectant = new DetectantClient(
+            apiKey: getenv('DETECTANT_API_KEY') ?: null,
+            options: [
+                'client' => new Client(),
+            ],
+        );
+        ```
+
+        ## Exception handling
+
+        ```php
+        use Detectant\Exceptions\DetectantApiException;
+        use Detectant\Exceptions\DetectantException;
+
+        try {
+            $result = $detectant->scan($request);
+        } catch (DetectantApiException $exception) {
+            echo $exception->getCode() . ': ' . $exception->getMessage() . PHP_EOL;
+        } catch (DetectantException $exception) {
+            echo $exception->getMessage() . PHP_EOL;
+        }
+        ```
+    status: unresolved
