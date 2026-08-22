@@ -18,7 +18,13 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-php-sdk: 2.20.4
-current_generation: bad2a2b656a0eb9674885a2c164b68d0752d36df
+  - commit_sha: bbe04f9b01e1e8526fa5984a88c4d2c85fdde953
+    tree_hash: 2251c8055df53384f2d18f4bb7a7d0092d1cf2fd
+    timestamp: 2026-08-22T12:03:48.532Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-php-sdk: 2.20.4
+current_generation: bbe04f9b01e1e8526fa5984a88c4d2c85fdde953
 patches:
   - id: patch-2ce287bf
     content_hash: sha256:27278b69ff22b76d7efb66a0db39a459249c9d2108e5ad68aa07927694ced767
@@ -502,4 +508,4 @@ patches:
             echo $exception->getMessage() . PHP_EOL;
         }
         ```
-    status: resolving
+    status: unresolved
