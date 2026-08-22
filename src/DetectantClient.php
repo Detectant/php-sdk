@@ -64,7 +64,7 @@ class DetectantClient
             'X-Fern-Language' => 'PHP',
             'X-Fern-SDK-Name' => 'Detectant',
             'X-Fern-SDK-Version' => '0.0.1',
-            'User-Agent' => 'detectant/detectant/0.0.1',
+            'User-Agent' => 'detectant/sdk/0.0.1',
         ];
         if ($apiKey != null) {
             $defaultHeaders['X-API-Key'] = $apiKey;

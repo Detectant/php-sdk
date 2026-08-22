@@ -11,7 +11,7 @@ Scan files for malware from PHP.
 This SDK requires PHP 8.1 or later and a PSR-18 HTTP client implementation.
 
 ```bash
-composer require detectant/detectant guzzlehttp/guzzle
+composer require detectant/sdk guzzlehttp/guzzle
 ```
 
 Set your API key in the environment:
@@ -31,6 +31,8 @@ $detectant = new DetectantClient(
     apiKey: getenv('DETECTANT_API_KEY') ?: null,
 );
 ```
+
+By default, requests are sent to `https://api.detectant.com`.
 
 ## Scan one file
 
@@ -117,7 +119,7 @@ Use `baseUrl` for a self-hosted or local API, and increase the timeout for large
 $detectant = new DetectantClient(
     apiKey: getenv('DETECTANT_API_KEY') ?: null,
     options: [
-        'baseUrl' => 'https://api.example.com',
+        'baseUrl' => 'http://127.0.0.1:8080',
         'timeout' => 120.0,
     ],
 );
