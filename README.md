@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../../app/dashboard/public/images/detectant-github-banner.png" alt="Detectant" width="100%">
+  <img src="https://www.detectant.com/images/detectant-github-banner.png" alt="Detectant" width="100%">
 </p>
 
 # Detectant PHP SDK
