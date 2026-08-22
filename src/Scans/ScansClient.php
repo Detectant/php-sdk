@@ -156,7 +156,7 @@ class ScansClient
             $response = $this->client->sendRequest(
                 new JsonApiRequest(
                     baseUrl: $options['baseUrl'] ?? $this->client->options['baseUrl'] ?? Environments::Default_->value,
-                    path: "v1/scans/{$scanId}",
+                    path: "v1/scans/" . RawClient::encodePathParam($scanId),
                     method: HttpMethod::GET,
                 ),
                 $options,
