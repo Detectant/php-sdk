@@ -113,13 +113,12 @@ One file can fail without preventing the other files in the batch from being sca
 
 ## Configuration
 
-Use `baseUrl` for a self-hosted or local API, and increase the timeout for large files when needed:
+Increase the timeout for large files when needed:
 
 ```php
 $detectant = new DetectantClient(
     apiKey: getenv('DETECTANT_API_KEY') ?: null,
     options: [
-        'baseUrl' => 'http://127.0.0.1:8080',
         'timeout' => 120.0,
     ],
 );
