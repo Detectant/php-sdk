@@ -24,5 +24,88 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-php-sdk: 2.20.4
-current_generation: bbe04f9b01e1e8526fa5984a88c4d2c85fdde953
-patches: []
+  - commit_sha: b9bbbe1cbe462f0f042958a9e416eef33fa85a70
+    tree_hash: c0b228144c67fa0121ad848fcc753095103e9ae3
+    timestamp: 2026-08-27T13:52:55.519Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-php-sdk: 2.20.4
+current_generation: b9bbbe1cbe462f0f042958a9e416eef33fa85a70
+patches:
+  - id: patch-32ac0ded
+    content_hash: sha256:148c7b296939a4687bd2a45860c22c1d97e5a7c7f66ede3329c2b3f27780d267
+    original_commit: 32ac0dede6fa46de03c2c4a8836391965987eecc
+    original_message: update readme
+    original_author: Jack <jack@jack.es>
+    base_generation: b9bbbe1cbe462f0f042958a9e416eef33fa85a70
+    files:
+      - composer.json
+    patch_content: |
+      diff --git a/composer.json b/composer.json
+      index 6776141..d91daeb 100644
+      --- a/composer.json
+      +++ b/composer.json
+      @@ -9,7 +9,7 @@
+         ],
+         "license": [],
+         "require": {
+      -    "php": "^8.1",
+      +    "php": "^8.3",
+           "ext-json": "*",
+           "psr/http-client": "^1.0",
+           "psr/http-client-implementation": "^1.0",
+      @@ -43,4 +43,4 @@
+           "test": "phpunit",
+           "analyze": "phpstan analyze src tests --memory-limit=1G"
+         }
+      -}
+      \ No newline at end of file
+      +}
+    theirs_snapshot:
+      composer.json: |
+        {
+          "name": "detectant/sdk",
+          "version": "0.0.1",
+          "description": "Detectant PHP Library",
+          "keywords": [
+            "detectant",
+            "api",
+            "sdk"
+          ],
+          "license": [],
+          "require": {
+            "php": "^8.3",
+            "ext-json": "*",
+            "psr/http-client": "^1.0",
+            "psr/http-client-implementation": "^1.0",
+            "psr/http-factory": "^1.0",
+            "psr/http-factory-implementation": "^1.0",
+            "psr/http-message": "^1.1 || ^2.0",
+            "php-http/discovery": "^1.0",
+            "php-http/multipart-stream-builder": "^1.0"
+          },
+          "require-dev": {
+            "phpunit/phpunit": "^12.5.22",
+            "friendsofphp/php-cs-fixer": "3.5.0",
+            "phpstan/phpstan": "^1.12",
+            "guzzlehttp/guzzle": "^7.4"
+          },
+          "autoload": {
+            "psr-4": {
+              "Detectant\\": "src/"
+            }
+          },
+          "autoload-dev": {
+            "psr-4": {
+              "Detectant\\Tests\\": "tests/"
+            }
+          },
+          "scripts": {
+            "build": [
+              "@php -l src",
+              "@php -l tests"
+            ],
+            "test": "phpunit",
+            "analyze": "phpstan analyze src tests --memory-limit=1G"
+          }
+        }
