@@ -30,24 +30,30 @@ generations:
     cli_version: unknown
     generator_versions:
       fernapi/fern-php-sdk: 2.20.4
-current_generation: b9bbbe1cbe462f0f042958a9e416eef33fa85a70
+  - commit_sha: 8b31714c4f9158dbba307de15078435106fbfb2c
+    tree_hash: c6893dc4807fd7b265855cdc35aa15afaff825f4
+    timestamp: 2026-08-27T14:11:26.884Z
+    cli_version: unknown
+    generator_versions:
+      fernapi/fern-php-sdk: 2.20.4
+current_generation: 8b31714c4f9158dbba307de15078435106fbfb2c
 patches:
   - id: patch-32ac0ded
-    content_hash: sha256:148c7b296939a4687bd2a45860c22c1d97e5a7c7f66ede3329c2b3f27780d267
+    content_hash: sha256:5becd7dbc3aabf6fbed4db011a1d2b30d57afc494298b6929cfba00cadca22f6
     original_commit: 32ac0dede6fa46de03c2c4a8836391965987eecc
     original_message: update readme
     original_author: Jack <jack@jack.es>
-    base_generation: b9bbbe1cbe462f0f042958a9e416eef33fa85a70
+    base_generation: 8b31714c4f9158dbba307de15078435106fbfb2c
     files:
       - composer.json
     patch_content: |
       diff --git a/composer.json b/composer.json
-      index 6776141..d91daeb 100644
+      index adce103..ea2601d 100644
       --- a/composer.json
       +++ b/composer.json
       @@ -9,7 +9,7 @@
          ],
-         "license": [],
+         "license": "MIT",
          "require": {
       -    "php": "^8.1",
       +    "php": "^8.3",
@@ -72,7 +78,7 @@ patches:
             "api",
             "sdk"
           ],
-          "license": [],
+          "license": "MIT",
           "require": {
             "php": "^8.3",
             "ext-json": "*",
@@ -109,3 +115,4 @@ patches:
             "analyze": "phpstan analyze src tests --memory-limit=1G"
           }
         }
+    user_owned: true
