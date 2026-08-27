@@ -59,6 +59,12 @@ class Scan extends JsonSerializableType
     public float $durationMs;
 
     /**
+     * @var ScanTimings $timings
+     */
+    #[JsonProperty('timings')]
+    public ScanTimings $timings;
+
+    /**
      * @var ?ScanFailure $failure Failure information, or `null` when the scan completed.
      */
     #[JsonProperty('failure')]
@@ -77,6 +83,12 @@ class Scan extends JsonSerializableType
     public TypeAnalysis $typeAnalysis;
 
     /**
+     * @var ScanSource $source
+     */
+    #[JsonProperty('source')]
+    public ScanSource $source;
+
+    /**
      * @param array{
      *   id: string,
      *   createdAt: DateTime,
@@ -86,8 +98,10 @@ class Scan extends JsonSerializableType
      *   sha256: string,
      *   sizeBytes: int,
      *   durationMs: float,
+     *   timings: ScanTimings,
      *   detections: array<string>,
      *   typeAnalysis: TypeAnalysis,
+     *   source: ScanSource,
      *   failure?: ?ScanFailure,
      * } $values
      */
@@ -102,9 +116,11 @@ class Scan extends JsonSerializableType
         $this->sha256 = $values['sha256'];
         $this->sizeBytes = $values['sizeBytes'];
         $this->durationMs = $values['durationMs'];
+        $this->timings = $values['timings'];
         $this->failure = $values['failure'] ?? null;
         $this->detections = $values['detections'];
         $this->typeAnalysis = $values['typeAnalysis'];
+        $this->source = $values['source'];
     }
 
     /**
