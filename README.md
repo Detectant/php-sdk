@@ -1,3 +1,5 @@
+# [Detectant - Malware Scanning API for PHP](https://www.detectant.com)
+
 <p align="center">
   <img src="https://www.detectant.com/images/detectant-github-banner.png" alt="Detectant" width="100%">
 </p>
@@ -8,7 +10,7 @@ Scan files for malware from PHP.
 
 ## Install
 
-This SDK requires PHP 8.1 or later and a PSR-18 HTTP client implementation.
+This SDK requires PHP 8.3 or later and a PSR-18 HTTP client implementation.
 
 ```bash
 composer require detectant/sdk guzzlehttp/guzzle
