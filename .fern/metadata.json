@@ -5,8 +5,8 @@
   "generatorConfig": {
     "packageName": "detectant/sdk"
   },
-  "originGitCommit": "e20c54e21be8b9d7757da6f2b9d45d42d0bde7ce",
-  "originGitCommitIsDirty": true,
+  "originGitCommit": "87dec6fc589390b1db492ae079b90eb38cd153a9",
+  "originGitCommitIsDirty": false,
   "invokedBy": "manual",
   "requestedVersion": "0.0.1",
   "sdkVersion": "0.0.1"
