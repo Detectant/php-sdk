@@ -87,6 +87,18 @@ class ScansClient
         if ($request->verdict != null) {
             $query['verdict'] = $request->verdict;
         }
+        if ($request->scanId != null) {
+            $query['scan_id'] = $request->scanId;
+        }
+        if ($request->sourceType != null) {
+            $query['source_type'] = $request->sourceType;
+        }
+        if ($request->storageIntegrationId != null) {
+            $query['storage_integration_id'] = $request->storageIntegrationId;
+        }
+        if ($request->failure != null) {
+            $query['failure'] = $request->failure;
+        }
         if ($request->filename != null) {
             $query['filename'] = $request->filename;
         }
@@ -156,7 +168,7 @@ class ScansClient
             $response = $this->client->sendRequest(
                 new JsonApiRequest(
                     baseUrl: $options['baseUrl'] ?? $this->client->options['baseUrl'] ?? Environments::Default_->value,
-                    path: "v1/scans/" . RawClient::encodePathParam($scanId),
+                    path: "v1/scans/{$scanId}",
                     method: HttpMethod::GET,
                 ),
                 $options,

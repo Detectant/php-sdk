@@ -248,6 +248,38 @@ $client->scans->listScans(
 <dl>
 <dd>
 
+**$scanId:** `?string` — Case-insensitive fragment matched against the scan identifier.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**$sourceType:** `?string` — Return direct API scans or scans submitted by an S3 integration.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**$storageIntegrationId:** `?string` — Return scans submitted by this S3 integration.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**$failure:** `?string` — Return scans by failure presence or customer-facing failure code.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **$filename:** `?string` — Case-sensitive PostgreSQL `LIKE` fragment matched against the stored filename; `%` and `_` act as wildcards.
     
 </dd>
