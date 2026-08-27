@@ -1,10 +1,10 @@
-# [Detectant - Malware Scanning API for PHP](https://www.detectant.com)
-
 <p align="center">
   <img src="https://www.detectant.com/images/detectant-github-banner.png" alt="Detectant" width="100%">
 </p>
 
 # Detectant PHP SDK
+
+[Detectant is a malware scanning API with support for PHP](https://www.detectant.com)
 
 Scan files for malware from PHP.
 
